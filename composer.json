@@ -30,7 +30,12 @@
         "swoole/ide-helper": "dev-master",
         "swow/swow": "dev-develop",
         "symfony/var-dumper": "^5.1",
-        "hyperf/context": "~2.2.0"
+        "hyperf/context": "~2.2.0",
+        "hyperf/http-message":"~2.2.0",
+        "hyperf/http-server": "~2.2.0",
+        "hyperf/contract": "~2.2.0",
+        "hyperf/utils": "~2.2.0",
+        "psr/http-message": "^1.0"
     },
     "conflict": {
         "w7corp/easywechat": "<6.0"
