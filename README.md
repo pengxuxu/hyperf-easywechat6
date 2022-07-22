@@ -3,7 +3,7 @@ easywechat6使symfony/http-client相关组件替换了之前4、5版本的Guzzle
 
 # hyperf-wechat
 
-微信 SDK for Hyperf， 基于 overtrue/wechat
+微信 SDK for Hyperf， 基于 w7corp/easywechat
 
 ## 安装
 ~~~shell script
