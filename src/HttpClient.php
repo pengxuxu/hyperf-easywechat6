@@ -9,8 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
-namespace Glue\EasyWeChat;
+namespace Pengxuxu\HyperfWechat;
 
 use EasyWeChat\Kernel\HttpClient\RequestUtil;
 use Hyperf\Context\Context;

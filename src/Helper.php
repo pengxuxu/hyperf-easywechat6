@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Glue\EasyWeChat;
+namespace Pengxuxu\HyperfWechat;
 
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Utils\ApplicationContext;

@@ -35,8 +35,8 @@ namespace App\Controller;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
-use Glue\EasyWeChat\EasyWechat;
-use Glue\EasyWeChat\Helper;
+use Pengxuxu\HyperfWechat\EasyWechat;
+use Pengxuxu\HyperfWechat\Helper;
 use ReflectionException;
 class WeChatController extends AbstractController
 {
@@ -64,7 +64,7 @@ class WeChatController extends AbstractController
 ##### 使用外观
 
 ```php
-  use Glue\EasyWeChat\EasyWechat;
+  use Pengxuxu\HyperfWechat\EasyWechat;
   $officialAccount = EasyWechat::officialAccount(); // 公众号
   $pay = EasyWechat::pay(); // 微信支付
   $miniApp = EasyWechat::miniApp(); // 小程序

@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @license https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Glue\EasyWeChat;
+namespace Pengxuxu\HyperfWechat;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -32,15 +32,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Factory
 {
-    protected $configMap
-        = [
-            'officialAccount' => 'official_account',
-            'pay' => 'pay',
-            'miniApp' => 'mini_app',
-            'openPlatform' => 'open_platform',
-            'work' => 'work',
-            'openWork' => 'open_work',
-        ];
+    protected $configMap = [
+        'officialAccount' => 'official_account',
+        'pay' => 'pay',
+        'miniApp' => 'mini_app',
+        'openPlatform' => 'open_platform',
+        'work' => 'work',
+        'openWork' => 'open_work',
+    ];
     /**
      * @var ContainerInterface
      */

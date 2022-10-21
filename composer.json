@@ -9,7 +9,7 @@
     "description": "hyperf easywechat6",
     "autoload": {
         "psr-4": {
-            "Glue\\EasyWechat\\": "src/"
+            "Pengxuxu\\HyperfWechat\\": "src/"
         }
     },
     "autoload-dev": {

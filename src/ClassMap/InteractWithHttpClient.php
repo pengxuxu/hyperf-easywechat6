@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace EasyWeChat\Kernel\Traits;
 
-use Glue\EasyWeChat\HttpClient;
+use Pengxuxu\HyperfWechat\HttpClient;
 use Psr\Log\LoggerAwareInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
