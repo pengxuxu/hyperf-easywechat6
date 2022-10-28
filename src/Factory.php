@@ -56,27 +56,40 @@ class Factory
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+
         $this->config = $container->get(ConfigInterface::class);
+
         $this->cache = $container->get(CacheInterface::class);
+
     }
 
     public function __call($functionName, $args)
     {
         $accountName = $args[0] ?? 'default';
+
         $accountConfig = $args[1] ?? [];
+
         if (!isset($this->configMap[$functionName])) {
             throw new \Exception('方法不存在!');
         }
         $configName = $this->configMap[$functionName];
-        $appName = ucfirst($configName);
+
+        $appName = ucfirst($functionName);
+
         $config = $this->getConfig(sprintf('wechat.%s.%s', $configName, $accountName), $accountConfig);
+
         $application = "\\EasyWeChat\\{$appName}\\Application";
+
         $symfonyRequest = $this->getRequest();
+
         $symfonyRequest->headers = $this->getHeaders();
+
         $app = new $application($config);
-        if (method_exists($application, 'setRequestFromSymfonyRequest')) {
-            $application->setRequestFromSymfonyRequest($symfonyRequest);
+
+        if (method_exists($app, 'setRequestFromSymfonyRequest')) {
+            $app->setRequestFromSymfonyRequest($symfonyRequest);
         }
+
         return $app;
     }
 
@@ -86,7 +99,9 @@ class Factory
     private function getConfig(string $name, array $config = []): array
     {
         $defaultConfig = $this->config->get('wechat.defaults', []);
+
         $moduleConfig = $this->config->get($name, []);
+
         return array_merge($moduleConfig, $defaultConfig, $config);
     }
 
@@ -96,11 +111,15 @@ class Factory
     private function getRequest(): Request
     {
         $request = $this->container->get(RequestInterface::class);
+
         $uploadFiles = $request->getUploadedFiles() ?? [];
+
         $files = [];
+
         foreach ($uploadFiles as $k => $v) {
             $files[$k] = $v->toArray();
         }
+
         return new Request(
             $request->getQueryParams(),
             $request->getParsedBody(),
@@ -118,6 +137,7 @@ class Factory
     private function getHeaders(): HeaderBag
     {
         $request = $this->container->get(RequestInterface::class);
+
         return new HeaderBag($request->getHeaders());
     }
 

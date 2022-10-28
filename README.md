@@ -38,7 +38,7 @@ use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Pengxuxu\HyperfWechat\EasyWechat;
 use Pengxuxu\HyperfWechat\Helper;
 use ReflectionException;
-class WeChatController extends AbstractController
+class WeChatController
 {
     /**
      * 处理微信的请求消息
