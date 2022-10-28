@@ -7,7 +7,7 @@ easywechat6使symfony/http-client相关组件替换了之前4、5版本的Guzzle
 
 ## 安装
 ~~~shell script
-composer require hyper-easywechat6 
+composer require pengxuxu/hyperf-easywechat6 
 ~~~
 
 ## 配置
