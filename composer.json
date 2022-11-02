@@ -50,7 +50,7 @@
     },
     "extra": {
         "hyperf": {
-            "config": "Glue\\EasyWechat\\ConfigProvider"
+            "config": "Pengxuxu\\HyperfWechat\\ConfigProvider"
         }
     }
 }
