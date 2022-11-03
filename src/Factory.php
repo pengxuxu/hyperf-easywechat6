@@ -86,6 +86,10 @@ class Factory
 
         $app = new $application($config);
 
+        if (method_exists($app, 'setCache')) {
+            $app->setCache($this->cache);
+        }
+
         if (method_exists($app, 'setRequestFromSymfonyRequest')) {
             $app->setRequestFromSymfonyRequest($symfonyRequest);
         }
