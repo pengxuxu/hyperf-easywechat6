@@ -1,32 +1,39 @@
 # Notice
-easywechat6使symfony/http-client相关组件替换了之前4、5版本的GuzzleHttp\Client请求组件，但是symfony/http-client没有协和支持
+
+easywechat6使symfony/http-client相关组件，替换了之前4、5版本的GuzzleHttp\Client请求组件，但是symfony/http-client没有协程支持,
+pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，支持协程上下文中获取到
+的为同一请求实例。
 
 # hyperf-wechat
 
 微信 SDK for Hyperf， 基于 w7corp/easywechat
 
 ## 安装
+
 ~~~shell script
 composer require pengxuxu/hyperf-easywechat6 
 ~~~
 
 ## 配置
+
 1. 发布配置文件
+
 ~~~shell script
 php ./bin/hyperf.php vendor:publish pengxuxu/hyperf-easywechat6
 ~~~
+
 2. 修改应用根目录下的 `config/autoload/wechat.php` 中对应的参数即可。
 3. 每个模块基本都支持多账号，默认为 `default`。
 
 ## 使用
+
 接收普通消息例子：
 
 ```php
 Router::addRoute(['GET', 'POST', 'HEAD'], '/wechat', 'App\Controller\WeChatController@serve');
 ```
 
-> 注意：一定是 `Router::addRoute`, 因为微信服务端认证的时候是 `GET`, 接收用户消息时是 `POST` ！
-然后创建控制器 `WeChatController`：
+> 注意：一定是 `Router::addRoute`, 因为微信服务端认证的时候是 `GET`, 接收用户消息时是 `POST` ！ 然后创建控制器 `WeChatController`：
 
 ```php
 <?php
@@ -52,14 +59,20 @@ class WeChatController
     public function serve()
     {
         $app = EasyWechat::officialAccount();
+        
         $server = $app->getServer();
+        
+        $server->with(function ($message, \Closure $next) {
+            return '谢谢关注！';
+            
+            // 你的自定义逻辑
+            // return $next($message);
+        });
         // 一定要用Helper::Response去转换
         return Helper::Response($server->serve());
     }
 }
 ```
-
-
 
 ##### 使用外观
 
