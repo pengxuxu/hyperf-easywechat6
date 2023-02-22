@@ -18,8 +18,6 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
-use Symfony\Component\HttpFoundation\HeaderBag;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class Factory.
@@ -40,14 +38,17 @@ class Factory
         'work' => 'work',
         'openWork' => 'open_work',
     ];
+
     /**
      * @var ContainerInterface
      */
     protected $container;
+
     /**
      * @var ConfigInterface
      */
     protected $config;
+    
     /**
      * @var CacheInterface
      */
@@ -60,7 +61,6 @@ class Factory
         $this->config = $container->get(ConfigInterface::class);
 
         $this->cache = $container->get(CacheInterface::class);
-
     }
 
     public function __call($functionName, $args)
@@ -72,6 +72,7 @@ class Factory
         if (!isset($this->configMap[$functionName])) {
             throw new \Exception('方法不存在!');
         }
+
         $configName = $this->configMap[$functionName];
 
         $appName = ucfirst($functionName);
@@ -80,18 +81,14 @@ class Factory
 
         $application = "\\EasyWeChat\\{$appName}\\Application";
 
-        $symfonyRequest = $this->getRequest();
-
-        $symfonyRequest->headers = $this->getHeaders();
-
         $app = new $application($config);
 
         if (method_exists($app, 'setCache')) {
             $app->setCache($this->cache);
         }
 
-        if (method_exists($app, 'setRequestFromSymfonyRequest')) {
-            $app->setRequestFromSymfonyRequest($symfonyRequest);
+        if (method_exists($app, 'setRequest')) {
+            $app->setRequest($this->container->get(RequestInterface::class));
         }
 
         return $app;
@@ -108,41 +105,4 @@ class Factory
 
         return array_merge($moduleConfig, $defaultConfig, $config);
     }
-
-    /**
-     * 获取Request请求
-     */
-    private function getRequest(): Request
-    {
-        $request = $this->container->get(RequestInterface::class);
-
-        $uploadFiles = $request->getUploadedFiles() ?? [];
-
-        $files = [];
-
-        foreach ($uploadFiles as $k => $v) {
-            $files[$k] = $v->toArray();
-        }
-
-        return new Request(
-            $request->getQueryParams(),
-            $request->getParsedBody(),
-            [],
-            $request->getCookieParams(),
-            $files,
-            $request->getServerParams(),
-            $request->getBody()->getContents()
-        );
-    }
-
-    /**
-     * 获取header
-     */
-    private function getHeaders(): HeaderBag
-    {
-        $request = $this->container->get(RequestInterface::class);
-
-        return new HeaderBag($request->getHeaders());
-    }
-
 }
