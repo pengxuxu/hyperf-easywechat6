@@ -14,7 +14,7 @@
   }
   ```
 
-3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，并修改常量 define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，就不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，它会根据当前环境，按AmpHttpClient（Amp），CurlHttpClient（Curl）和NativeHttpClient（Stream）的顺序返回http处理器。
+3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，并修改常量 define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，就不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，它会根据当前环境，按CurlHttpClient（Curl，如果安装了curl扩展），AmpHttpClient（Amp）和NativeHttpClient（Stream）的顺序返回http处理器。
 
 4. 建议安装easywechat6.11.1（>=）以上版本，从该版本开始加入了[主动请求和异步通知的验签](https://easywechat.com/6.x/pay/index.html#%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E4%BC%9A%E7%94%A8%E5%88%B0%E7%9A%84)。
 # hyperf-wechat
