@@ -1,6 +1,6 @@
 # Notice
 
-1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的GuzzleHttp\Client请求组件，Symfony Http Client在常驻内存的服务中使用时，
+1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，
 HttpClient会因为多个协程共用而报错。pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，
 支持协程上下文中获取到的为同一请求实例。
 
@@ -19,7 +19,9 @@ if (method_exists($app, 'setCache')) {
 }
 ```
 
-3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。
+3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，
+且define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，则不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，
+它会根据当前环境，按AmpHttpClient（Amp），CurlHttpClient（Curl）和NativeHttpClient（Stream）顺序返回http处理器。
 
 # hyperf-wechat
 
