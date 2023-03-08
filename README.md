@@ -1,28 +1,22 @@
 # Notice
+1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://wiki.swoole.com/#/coroutine/notice?id=%e5%9c%a8%e5%a4%9a%e4%b8%aa%e5%8d%8f%e7%a8%8b%e9%97%b4%e5%85%b1%e7%94%a8%e4%b8%80%e4%b8%aa%e8%bf%9e%e6%8e%a5)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，支持协程上下文中获取到的为同一请求实例。
 
-1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，
-HttpClient会因为多个协程共用而报错。pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，
-支持协程上下文中获取到的为同一请求实例。
+2. pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
+  ```php
+  $app = new Application($config);
 
-2. pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，
-替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
-
-```php
-$app = new Application($config);
-
-if (method_exists($app, 'setRequest')) {
+  if (method_exists($app, 'setRequest')) {
     $app->setRequest(ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface));
-}
+  }
 
-if (method_exists($app, 'setCache')) {
+  if (method_exists($app, 'setCache')) {
     $app->setCache(ApplicationContext::getContainer()->get(\Psr\SimpleCache\CacheInterface::class)
-}
-```
+  }
+  ```
 
-3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，
-且define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，则不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，
-它会根据当前环境，按AmpHttpClient（Amp），CurlHttpClient（Curl）和NativeHttpClient（Stream）顺序返回http处理器。
+3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，并修改常量 define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，就不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，它会根据当前环境，按AmpHttpClient（Amp），CurlHttpClient（Curl）和NativeHttpClient（Stream）的顺序返回http处理器。
 
+4. 建议安装easywechat6.11.1（>=）以上版本，从该版本开始加入了[主动请求和异步通知的验签](https://easywechat.com/6.x/pay/index.html#%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E4%BC%9A%E7%94%A8%E5%88%B0%E7%9A%84)。
 # hyperf-wechat
 
 微信 SDK for Hyperf， 基于 w7corp/easywechat
