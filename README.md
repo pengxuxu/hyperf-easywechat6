@@ -1,5 +1,5 @@
 # Notice
-1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://wiki.swoole.com/#/coroutine/notice?id=%e5%9c%a8%e5%a4%9a%e4%b8%aa%e5%8d%8f%e7%a8%8b%e9%97%b4%e5%85%b1%e7%94%a8%e4%b8%80%e4%b8%aa%e8%bf%9e%e6%8e%a5)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，支持协程上下文中获取到的为同一请求实例。
+1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://wiki.swoole.com/#/coroutine/notice?id=%e5%9c%a8%e5%a4%9a%e4%b8%aa%e5%8d%8f%e7%a8%8b%e9%97%b4%e5%85%b1%e7%94%a8%e4%b8%80%e4%b8%aa%e8%bf%9e%e6%8e%a5)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，使得不同协程为不同的请求实例，同一协程上下文中获取到的为同一请求实例。
 
 2. pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
   ```php
