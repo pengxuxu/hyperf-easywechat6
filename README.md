@@ -1,22 +1,24 @@
 # Notice
 
-1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的GuzzleHttp\Client请求组件，pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，支持协程上下文中获取到
-的为同一请求实例。
+1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的GuzzleHttp\Client请求组件，Symfony Http Client在常驻内存的服务中使用时，
+HttpClient会因为多个协程共用而报错。pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，
+支持协程上下文中获取到的为同一请求实例。
+
 2. pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，
 替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
+
 ```php
 $app = new Application($config);
 
-$request = ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface);
-
 if (method_exists($app, 'setRequest')) {
-    $app->setRequest(ApplicationContext::getContainer()->get(RequestInterface::class));
+    $app->setRequest(ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface));
 }
 
 if (method_exists($app, 'setCache')) {
     $app->setCache(ApplicationContext::getContainer()->get(\Psr\SimpleCache\CacheInterface::class)
 }
 ```
+
 3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。
 
 # hyperf-wechat
