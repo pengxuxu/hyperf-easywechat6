@@ -1,7 +1,37 @@
 # Notice
-1. easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://wiki.swoole.com/#/coroutine/notice?id=%e5%9c%a8%e5%a4%9a%e4%b8%aa%e5%8d%8f%e7%a8%8b%e9%97%b4%e5%85%b1%e7%94%a8%e4%b8%80%e4%b8%aa%e8%bf%9e%e6%8e%a5)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，使得不同协程为不同的请求实例，同一协程上下文中获取到的为同一请求实例。
+- easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://wiki.swoole.com/#/coroutine/notice?id=%e5%9c%a8%e5%a4%9a%e4%b8%aa%e5%8d%8f%e7%a8%8b%e9%97%b4%e5%85%b1%e7%94%a8%e4%b8%80%e4%b8%aa%e8%bf%9e%e6%8e%a5)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，使得不同协程为不同的请求实例，同一协程上下文中获取到的为同一请求实例。
 
-2. pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
+```php
+<?php
+declare(strict_types=1);
+namespace App\Controller;
+
+use EasyWeChat\Kernel\HttpClient\RequestUtil;
+use Symfony\Component\HttpClient\HttpClient as SymfonyClient;
+
+class IndexController extends AbstractController
+{
+    public function index()
+    {
+        $user = $this->request->input('user', 'Hyperf');
+        $method = $this->request->getMethod();
+        $client = SymfonyClient::create(RequestUtil::formatDefaultOptions([]));
+        go(function () use ($client) {
+            $client->request('GET', 'http://www.baidu.com/');
+        });
+        go(function () use ($client) {
+            $client->request('GET', 'http://www.baidu.com/');
+        });
+        return [
+            'method' => $method,
+            'message' => "Hello {$user}.",
+        ];
+    }
+}
+在swoole>=4.7.0且开启native url，共同一个HttpClient情况下，报错信息：
+PHP Fatal error:  Uncaught Swoole\Error: cURL is executing, cannot be operated in /data/project/hyperf-skeleton/vendor/symfony/http-client/Response/CurlResponse.php:366
+```
+- pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
   ```php
   $app = new Application($config);
 
@@ -14,9 +44,9 @@
   }
   ```
 
-3. 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4,5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，并修改常量 define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，就不用替换Guzzle中的handler使其成为协程客户端。easywechat6则使用symfony/http-client包，它会根据当前环境，按CurlHttpClient（Curl，如果安装了curl扩展），AmpHttpClient（Amp）和NativeHttpClient（Stream）的顺序返回http处理器。
+- 建议使用Swoole 4.7.0 及以上版本，并且开启 native curl 选项。easywechat4，5版本使用的是Guzzle，该组件默认使用Curl，如果开启navie curl，并修改常量 define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL)，就不用替换Guzzle中的handler。easywechat6则使用symfony/http-client包，它会根据当前环境，按CurlHttpClient（Curl，如果安装了curl扩展），AmpHttpClient（Amp HTTP/2 Support）和NativeHttpClient（Stream）的顺序返回http客户端。拿hyperf官方 Hyperf\Guzzle\CoroutineHandler handler举例来说，这个handler里会new一个继承自Swoole\Coroutine\Http\Client 的协程客户端HttpClient，这个就解释了上面提到的HttpClient会因为多个协程共用而报错和easywechat4，5版本如果换guzzle handler后无需再classmap替换。
 
-4. 建议安装easywechat6.11.1（>=）以上版本，从该版本开始加入了[主动请求和异步通知的验签](https://easywechat.com/6.x/pay/index.html#%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E4%BC%9A%E7%94%A8%E5%88%B0%E7%9A%84)。
+- 建议安装easywechat6.11.1（>=）以上版本，从该版本开始加入了[主动请求和异步通知的验签](https://easywechat.com/6.x/pay/index.html#%E4%B8%80%E4%BA%9B%E5%8F%AF%E8%83%BD%E4%BC%9A%E7%94%A8%E5%88%B0%E7%9A%84)。
 # hyperf-wechat
 
 微信 SDK for Hyperf， 基于 w7corp/easywechat
