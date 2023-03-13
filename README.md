@@ -28,7 +28,7 @@ class IndexController extends AbstractController
         ];
     }
 }
-在swoole>=4.7.0且开启native url，共同一个HttpClient情况下，报错信息：
+在swoole>=4.7.0且开启native curl修改常量SWOOLE_HOOK_ALL，共用一个HttpClient情况下，报错信息：
 PHP Fatal error:  Uncaught Swoole\Error: cURL is executing, cannot be operated in /data/project/hyperf-skeleton/vendor/symfony/http-client/Response/CurlResponse.php:366
 ```
 - pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
