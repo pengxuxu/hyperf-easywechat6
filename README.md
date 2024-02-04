@@ -36,7 +36,7 @@ PHP Fatal error:  Uncaught Swoole\Error: cURL is executing, cannot be operated i
   ```php
   $app = new Application($config);
 
-  if (Hyperf\Context\Context\Context::get(ServerRequestInterface::class) && method_exists($app, 'setRequest')) {
+  if (\Hyperf\Context\Context::get(ServerRequestInterface::class) && method_exists($app, 'setRequest')) {
     $app->setRequest(ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface));
   }
 
