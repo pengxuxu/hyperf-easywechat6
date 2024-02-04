@@ -32,10 +32,11 @@ class IndexController extends AbstractController
 PHP Fatal error:  Uncaught Swoole\Error: cURL is executing, cannot be operated in /data/project/hyperf-skeleton/vendor/symfony/http-client/Response/CurlResponse.php:366
 ```
 - pengxuxu/hyperf-easywechat6包用hyperf的容器获得Hyperf\HttpServer\Contract\RequestInterface对应的Hyperf\HttpServer\Request，替换了easywechat6中的同样基于PSR-7规范request；获得Psr\SimpleCache\CacheInterface对应的缓存类，替换easywechat6中同样基于PSR-16规范的cache。
+- 在替换request前，判断当前协程是否存在服务端请求，避免了在hyperf的定时任务、命令行等，使用外观获取对应Application时出现的错误，比如在定时任务中只需要获取请求getClient()发送模板消息请求等场景。
   ```php
   $app = new Application($config);
 
-  if (method_exists($app, 'setRequest')) {
+  if (Hyperf\Context\Context\Context::get(ServerRequestInterface::class) && method_exists($app, 'setRequest')) {
     $app->setRequest(ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface));
   }
 
