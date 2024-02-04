@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace Pengxuxu\HyperfWechat;
 
+use Hyperf\Context\Context;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -48,7 +50,7 @@ class Factory
      * @var ConfigInterface
      */
     protected $config;
-    
+
     /**
      * @var CacheInterface
      */
@@ -87,7 +89,7 @@ class Factory
             $app->setCache($this->cache);
         }
 
-        if (method_exists($app, 'setRequest')) {
+        if (Context::get(ServerRequestInterface::class) && method_exists($app, 'setRequest')) {
             $app->setRequest($this->container->get(RequestInterface::class));
         }
 
