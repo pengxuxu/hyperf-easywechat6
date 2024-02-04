@@ -27,6 +27,10 @@ class EasyWechat
 {
     public static function __callStatic($functionName, $args)
     {
+        if (class_exists('\Hyperf\Context\ApplicationContext')) {
+            return \Hyperf\Context\ApplicationContext::getContainer()->get(Factory::class)->{$functionName}(...$args);
+        }
+
         return ApplicationContext::getContainer()->get(Factory::class)->{$functionName}(...$args);
     }
 }

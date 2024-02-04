@@ -21,7 +21,11 @@ class Helper
 {
     public static function Response(ResponseInterface $response)
     {
-        $psrResponse = ApplicationContext::getContainer()->get(PsrResponseInterface::class);
+        if (class_exists('\Hyperf\Context\ApplicationContext')) {
+            $psrResponse = \Hyperf\Context\ApplicationContext::getContainer()->get(PsrResponseInterface::class);
+        } else {
+            $psrResponse = ApplicationContext::getContainer()->get(PsrResponseInterface::class);
+        }
 
         $psrResponse = $psrResponse->withBody(new SwooleStream((string)$response->getBody()))
             ->withStatus($response->getStatusCode());
