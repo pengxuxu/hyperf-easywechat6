@@ -86,20 +86,19 @@ declare(strict_types=1);
 namespace App\Controller;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
-use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
+use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Pengxuxu\HyperfWechat\EasyWechat;
 use Pengxuxu\HyperfWechat\Helper;
-use ReflectionException;
+use Hyperf\HttpServer\Contract\ResponseInterface
 class WeChatController
 {
     /**
      * 处理微信的请求消息
      *
-     * @return string
+     * @return ResponseInterface
      * @throws BadRequestException
      * @throws InvalidArgumentException
-     * @throws InvalidConfigException
-     * @throws ReflectionException
+     * @throws RuntimeException;
      */
     public function serve()
     {

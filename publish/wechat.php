@@ -59,22 +59,22 @@ return [
     //支付
     'pay' => [
         'default' => [
-            'mch_id' => 1360649000,
+            'mch_id' => '',
 
             // 商户证书
-            'private_key' => __DIR__ . '/certs/apiclient_key.pem',
-            'certificate' => __DIR__ . '/certs/apiclient_cert.pem',
+            'private_key' => '',//绝对路径
+            'certificate' => '',//绝对路径
 
             // v3 API 秘钥
-            'secret_key' => '43A03299A3C3FED3D8CE7B820Fxxxxx',
+            'secret_key' => '',
 
             // v2 API 秘钥
-            'v2_secret_key' => '26db3e15cfedb44abfbb5fe94fxxxxx',
+            'v2_secret_key' => '',
 
             // 平台证书：微信支付 APIv3 平台证书，需要使用工具下载
             // 下载工具：https://github.com/wechatpay-apiv3/CertificateDownloader
             'platform_certs' => [
-                // '/path/to/wechatpay/cert.pem',
+                // '/path/to/wechatpay/cert.pem',//绝对路径
             ],
 
             /**
@@ -93,10 +93,10 @@ return [
     //小程序
     'mini_app' => [
         'default' => [
-            'app_id' => 'wx3cf0f39249eb0exx',
-            'secret' => 'f1c242f4f28f735d4687abb469072axx',
-            'token' => 'easywechat',
-            'aes_key' => '......',
+            'app_id' => '',
+            'secret' => '',
+            'token' => '',
+            'aes_key' => '',
 
             /**
              * 接口请求相关配置，超时时间等，具体可用参数请参考：
@@ -126,9 +126,9 @@ return [
     //开放平台
     'open_platform' => [
         'default' => [
-            'app_id' => 'wx3cf0f39249eb0exx', // 开放平台账号的 appid
-            'secret' => 'f1c242f4f28f735d4687abb469072axx',   // 开放平台账号的 secret
-            'token' => 'easywechat',  // 开放平台账号的 token
+            'app_id' => '', // 开放平台账号的 appid
+            'secret' => '',   // 开放平台账号的 secret
+            'token' => '',  // 开放平台账号的 token
             'aes_key' => '',   // 明文模式请勿填写 EncodingAESKey
 
             /**
@@ -159,10 +159,10 @@ return [
     //企业微信
     'work' => [
         'default' => [
-            'corp_id' => 'wx3cf0f39249eb0exx',
-            'secret' => 'f1c242f4f28f735d4687abb469072axx',
-            'token' => 'easywechat',
-            'aes_key' => '35d4687abb469072a29f1c242xxxxxx',
+            'corp_id' => '',
+            'secret' => '',
+            'token' => '',
+            'aes_key' => '',
 
             /**
              * 接口请求相关配置，超时时间等，具体可用参数请参考：
@@ -192,9 +192,9 @@ return [
     //企业微信开放平台
     'open_work' => [
         'default' => [
-            'corp_id' => 'wx3cf0f39249eb0exx',
-            'provider_secret' => 'f1c242f4f28f735d4687abb469072axx',
-            'token' => 'easywechat',
+            'corp_id' => '',
+            'provider_secret' => '',
+            'token' => '',
             'aes_key' => '', // 明文模式请勿填写 EncodingAESKey
 
             /**
