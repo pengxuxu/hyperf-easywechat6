@@ -1,4 +1,5 @@
 # Notice
+- v1.0.7(含)版本上兼容hyperf2和3版本。
 - easywechat6用symfony/http-client相关组件，替换了之前4，5等版本的Guzzle请求组件，Symfony Http Client在常驻内存的服务中使用时，[HttpClient会因为多个协程共用而报错](https://github.com/swoole/swoole-src/issues/5008#issuecomment-1465458380)。 pengxuxu/hyperf-easywechat6包使用hyperf的ClassMap替换了InteractWithHttpClient中的HttpClient对象实例，使得不同协程为不同的请求实例，同一协程上下文中获取到的为同一请求实例。
 
 ```php
@@ -84,12 +85,14 @@ Router::addRoute(['GET', 'POST', 'HEAD'], '/wechat', 'App\Controller\WeChatContr
 <?php
 declare(strict_types=1);
 namespace App\Controller;
+
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Pengxuxu\HyperfWechat\EasyWechat;
 use Pengxuxu\HyperfWechat\Helper;
-use Hyperf\HttpServer\Contract\ResponseInterface
+use Hyperf\HttpServer\Contract\ResponseInterface;
+
 class WeChatController
 {
     /**
