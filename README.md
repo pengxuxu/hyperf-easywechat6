@@ -82,9 +82,11 @@ Router::addRoute(['GET', 'POST', 'HEAD'], '/wechat', 'App\Controller\WeChatContr
 > 注意：一定是 `Router::addRoute`, 因为微信服务端认证的时候是 `GET`, 接收用户消息时是 `POST` ！ 然后创建控制器 `WeChatController`：
 
 ```php
+
 <?php
 declare(strict_types=1);
 namespace App\Controller;
+
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
