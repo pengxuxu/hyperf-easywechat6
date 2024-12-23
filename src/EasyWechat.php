@@ -16,12 +16,12 @@ use Hyperf\Utils\ApplicationContext;
 
 /**
  * Class EasyWechat
- * @method \EasyWeChat\OfficialAccount\Application officialAccount(string $name = "default", array $config = [])
- * @method \EasyWeChat\Pay\Application pay(string $name = "default", array $config = [])
- * @method \EasyWeChat\MiniApp\Application miniApp(string $name = "default", array $config = [])
- * @method \EasyWeChat\OpenPlatform\Application openPlatform(string $name = "default", array $config = [])
- * @method \EasyWeChat\Work\Application work(string $name = "default", array $config = [])
- * @method \EasyWeChat\OpenWork\Application openWork(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\OfficialAccount\Application officialAccount(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\Pay\Application pay(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\MiniApp\Application miniApp(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\OpenPlatform\Application openPlatform(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\Work\Application work(string $name = "default", array $config = [])
+ * @method static \EasyWeChat\OpenWork\Application openWork(string $name = "default", array $config = [])
  */
 class EasyWechat
 {
