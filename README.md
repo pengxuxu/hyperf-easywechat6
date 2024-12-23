@@ -42,7 +42,7 @@ PHP Fatal error:  Uncaught Swoole\Error: cURL is executing, cannot be operated i
   }
 
   if (method_exists($app, 'setCache')) {
-    $app->setCache(ApplicationContext::getContainer()->get(\Psr\SimpleCache\CacheInterface::class)
+    $app->setCache(ApplicationContext::getContainer()->get(\Psr\SimpleCache\CacheInterface::class));
   }
   ```
 
@@ -115,8 +115,8 @@ class WeChatController
             // 你的自定义逻辑
             // return $next($message);
         });
-        // 一定要用Helper::Response去转换
-        return Helper::Response($server->serve());
+
+        return $server->serve();
     }
 }
 ```
